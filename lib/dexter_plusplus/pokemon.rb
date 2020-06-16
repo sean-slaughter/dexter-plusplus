@@ -69,7 +69,9 @@ class Pokemon
     def add_type(type)
         self.types << type
         if !type.pokemon.include?(self)
-
+            type.add_pokemon(self)
+        end
+    end
 
 
 

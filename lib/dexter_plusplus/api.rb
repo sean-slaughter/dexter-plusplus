@@ -5,7 +5,7 @@ class API
 
 
     def self.get_pokemon
-        response = RestClient.get(BASE_URL + "pokemon/bulbasaur")
+        response = RestClient.get(BASE_URL + "move/1/")
         data = JSON.parse(response)
         binding.pry
     end

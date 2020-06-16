@@ -63,3 +63,15 @@ CLI:
                 load_data: loads data based on user input
                 exit: exit program
 
+
+TODO 6/16: 
+
+    1. Create findable module and implement in classes
+    2. Keep all class relationships assigned out of that class
+    3. Figure out how to set ability, item and type attributes
+    4. Create API class
+    5. Create CLI class
+    6. Write executable program (bring in ascii art)
+
+    
+
