@@ -1,4 +1,5 @@
 Dexter++ : A Ruby CLI PokeDex Gem
+BASE URL: https://pokeapi.co/api/v2/
 
 Model classes:
 
@@ -27,7 +28,7 @@ Item:
         Attributes: Name
                     Effect
 
-Utility classes:
+Service classes:
 
 API:
 
