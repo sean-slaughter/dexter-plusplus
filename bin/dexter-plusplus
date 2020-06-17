@@ -3,4 +3,5 @@
 
 require_relative "../lib/environment"
 
-API.get_pokemon
+bulbasaur = API.get_items
+binding.pry

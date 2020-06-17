@@ -1,43 +1,45 @@
 class Type
+    extend Findable
+    extend Creatable
 
-    attr_accessor :name, :id, :moves, :pokemon
+    attr_accessor :name, :id, :moves, :pokemon_with_type, :data, :url
     @@all = []
+    @@tag = "type"
 
-    def initialize(name, url, pokemon = nil)
-        self.name = name
+    def initialize(name, url)
+        self.name = name.capitalize
         self.url = url
+        self.data = JSON.parse(RestClient.get(url))
         self.moves = []
-        self.pokemon = []
+        self.pokemon_with_type = []
         self.set_attributes
-        if pokemon
-            self.add_pokemon(pokemon)
-        end
         @@all << self
     end
 
     def set_attributes
+        self.id = self.data["id"]
     end
 
     def self.all
-        @all
+        @@all
     end
 
-    #create array of types from hash
-    def self.create_types_from_hash(type_hash, pokemon = nil)
+    def self.tag
+        @@tag
+    end
+    
+    def tag
+        @@tag
     end
 
     def add_pokemon(pokemon)
-        if !self.pokemon.include?(pokemon)
-            self.pokemon << pokemon
-        end
-        if !pokemon.types.include(self)
-            pokemon.add_type(self)
+       self.pokemon_with_type << pokemon
+    end
+
+    def add_move(move)
+        if !self.moves.include?(move)
+            self.moves << move
         end
     end
 
-    def self.find_or_create_by_name(name, url, pokemon = nil)
-        if self.all.find{|type| type.name == name}
-            self.all.find{|type| type.name == name}
-        else
-            self.new(name, url, pokemon)
-        end
+end

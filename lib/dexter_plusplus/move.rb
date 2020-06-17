@@ -1,18 +1,26 @@
 class Move
+    extend Findable
+    extend Creatable
 
     attr_accessor :url, :data, :name, :accuracy, :effect, :power, :pp, :type, :pokemon_with_move, :id
     @@all =[]
+    @@tag = "move"
 
-    def initialize(name, url, pokemon = nil)
-        self.pokemon_with_move = []
+    def initialize(name, url)
         self.name = name.capitalize
         self.url = url
         self.data = JSON.parse(RestClient.get(url))
         self.set_attributes
-        if !pokemon.nil?
-            self.add_pokemon(pokemon)
-        end
+        self.pokemon_with_move = []
         @@all << self
+    end
+
+    def self.all
+        @@all
+    end
+    
+    def self.tag
+        @@tag
     end
 
     def set_attributes
@@ -21,10 +29,11 @@ class Move
         self.set_effect
         self.set_power
         self.set_pp
+        self.set_id
     end
 
     def set_type
-        self.type = Type.find_or_create_by_name(self.data["type"]["name"], self.data["type"]["url"])
+        self.type = Type.find_or_create_by_name(self.data["type"]["name"])
     end
 
     def set_accuracy
@@ -49,14 +58,6 @@ class Move
 
     def add_pokemon(pokemon)
         self.pokemon_with_move << pokemon
-        if !pokemon.moves.include?(self)
-            pokemon.add_move(self)
-        end
     end
-
-    #create moves from hash and return as array
-    def self.create_moves_from_hash(moves_hash, pokemon = nil)
-    end
-
     
 end
