@@ -5,9 +5,10 @@ class Ability
     attr_accessor :name, :id, :effect, :pokemon_with_ability, :url, :data 
     @@all = []
     @@tag = "ability"
+    @@limit = 293
 
     def initialize(name, url)
-        self.name = name.capitalize
+        self.name = name.capitalize.light_blue
         self.url = url
         self.data = JSON.parse(RestClient.get(url))
         self.pokemon_with_ability = []
@@ -27,13 +28,22 @@ class Ability
         @@tag
     end
 
+    def self.limit
+        @@limit
+    end
+
     def set_attributes
         self.set_effect
         self.set_id
     end
 
     def set_effect
-        self.effect = self.data["effect_entries"][1]["effect"]
+        effect_entries = self.data["effect_entries"]
+        effect_entries.each do |entry|
+            if entry["language"]["name"] == "en"
+                self.effect = entry["effect"]
+            end
+        end
     end
 
     def set_id
@@ -42,6 +52,26 @@ class Ability
 
     def add_pokemon(pokemon)
         self.pokemon_with_ability << pokemon
+    end
+
+    def print_all
+        puts "---------------------------------------------------------"
+        self.print_name
+        puts ""
+        self.print_effect 
+        puts "---------------------------------------------------------"
+    end
+
+    def self.print_all
+        @@all.each {|ability| ability.print_all}
+    end
+
+    def print_name
+        puts "\tName: #{self.name}"
+    end
+
+    def print_effect
+        puts "\tEffect: #{self.effect}"
     end
 
 end

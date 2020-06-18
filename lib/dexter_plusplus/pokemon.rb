@@ -6,12 +6,13 @@ class Pokemon
     attr_accessor :name, :moves, :abilities, :base_stats, :height, :weight, :generation, :types, :url, :id, :data
     @@all = []
     @@tag = "pokemon"
+    @@limit = 807
 
     #do not load any pokemon outside of these id #'s
     CONST_GENERATIONS = [151, 251, 386, 493, 649, 721, 807]
 
     def initialize(name, url)
-        self.name = name.capitalize
+        self.name = name.capitalize.light_yellow
         self.url = url
         self.data = JSON.parse(RestClient.get(url))
         self.moves = []
@@ -34,6 +35,10 @@ class Pokemon
         @@tag
     end
 
+    def self.limit
+        @@limit
+    end
+
     def set_attributes
         self.set_moves
         self.set_abilities
@@ -46,7 +51,7 @@ class Pokemon
     end
 
     def set_moves
-        move_array = Move.create_from_array(self.data["moves"])
+        move_array = Move.create_from_array(self.data["moves"].first(4))
         move_array.each{|move| self.add_move(move)}
     end
 
@@ -113,8 +118,61 @@ class Pokemon
         end
     end
 
-   
+    def print_all
+        puts "---------------------------------------------------------"
+        self.print_name
+        self.print_generation
+        self.print_weight_and_height
+        puts ""
+        self.print_types
+        puts ""
+        self.print_abilities
+        puts ""
+        self.print_moves
+        puts ""
+        self.print_base_stats
+        puts "---------------------------------------------------------"
+    end
 
+    def self.print_all
+        self.all.each{|pokemon| pokemon.print_all}
+    end
 
+    def print_name
+        puts "\tName: #{self.name}"
+    end
+
+    def print_types
+        output = "\tTypes:\n"
+        self.types.each_with_index{|type, index| output += "\t#{index + 1}: #{type.name}\n"}
+        puts output
+    end
+
+    def print_abilities
+        output = "\tAbilities:\n"
+        self.abilities.each_with_index{|ability, index| output += "\t#{index + 1}: #{ability.name}\n"}
+        puts output
+    end
+
+    def print_moves
+        output = "\tMoves:\n"
+        self.moves.each_with_index{|move, index| output += "\t#{index + 1}: #{move.name}\n"}
+        puts output
+    end
+
+    def print_base_stats
+        output =  "\tBase Stats:\n"
+        self.base_stats.each{|stat| output += "\t#{stat}\n"}
+        puts output
+    end
+
+    def print_weight_and_height
+        puts "\tHeight: #{self.height}"
+        puts "\tWeight: #{self.weight}"
+    end
+
+    def print_generation
+        puts "\tGeneration: #{self.generation}"
+    end
 
 end

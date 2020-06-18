@@ -73,5 +73,25 @@ TODO 6/16:
     5. Create CLI class
     6. Write executable program (bring in ascii art)
 
+
+TODO 6/18:
+
+    1. Finish API class
+    2. Make all objects printable (colorize)
+    3. Start CLI class
+    4. Reduce benchmark time if possible.
+    Benchmarks -  26 sec for 20 Pokemon
+               -  2:49 for 100 pokemon
+
+TODO 6/18 end of day
+    1. Test api methods
+    2. Fix bugs
+    3. Write CLI
+
+
+
+BUGS!!! Abilities are not getting effects set to them.
+        Types are being created more than once.
+
     
 

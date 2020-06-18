@@ -5,9 +5,10 @@ class Item
         attr_accessor :name, :url, :effect, :id, :data 
         @@all = []
         @@tag = "item"
+        @@limit = 954
 
         def initialize(name, url)
-            self.name = name.capitalize
+            self.name = name.capitalize.light_green
             self.url = url
             self.data = JSON.parse(RestClient.get(url))
             self.set_attributes
@@ -20,6 +21,10 @@ class Item
 
         def self.tag
             @@tag
+        end
+
+        def self.limit
+            @@limit
         end
 
         def tag
@@ -38,5 +43,27 @@ class Item
         def set_id
             self.id = self.data["id"]
         end
+
+        def print_name
+            puts "\tName: #{self.name}"
+        end
+
+        def print_effect
+            puts "\tEffect: #{self.effect}"
+        end
+
+        def print_all
+            puts "---------------------------------------------------------"
+            self.print_name
+            puts ""
+            self.print_effect
+            puts "---------------------------------------------------------"
+        end
+
+        def self.print_all
+            self.all.each{|item| item.print_all}
+        end
+
+
 
 end

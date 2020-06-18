@@ -5,9 +5,10 @@ class Move
     attr_accessor :url, :data, :name, :accuracy, :effect, :power, :pp, :type, :pokemon_with_move, :id
     @@all =[]
     @@tag = "move"
+    @@limit = 746
 
     def initialize(name, url)
-        self.name = name.capitalize
+        self.name = name.capitalize.light_red
         self.url = url
         self.data = JSON.parse(RestClient.get(url))
         self.set_attributes
@@ -21,6 +22,10 @@ class Move
     
     def self.tag
         @@tag
+    end
+
+    def self.limit
+        @@limit
     end
 
     def set_attributes
@@ -59,5 +64,44 @@ class Move
     def add_pokemon(pokemon)
         self.pokemon_with_move << pokemon
     end
+
+    def print_all
+        puts "---------------------------------------------------------"
+        self.print_name
+        puts ""
+        self.print_type
+        puts ""
+        self.print_effect
+        puts ""
+        self.print_power
+        puts ""
+        self.print_pp
+        puts "---------------------------------------------------------"
+    end
+
+    def print_name
+        puts "\tName: #{self.name}"
+    end
+
+    def print_type
+
+        puts "\tType: #{self.type.name}"
+    end
+    def print_effect
+        puts "\tEffect: #{self.effect}"
+    end
+
+    def print_power
+        puts "\tPower: #{self.power}"
+    end
+
+    def print_pp
+        puts "\tPP: #{self.pp}"
+    end
+
+    def self.print_all
+        self.all.each{|move| move.print_all }
+    end
+
     
 end
