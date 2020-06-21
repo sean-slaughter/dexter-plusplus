@@ -1,6 +1,6 @@
 class Move
     extend Findable
-    extend Creatable
+    
 
     attr_accessor :url, :data, :name, :accuracy, :effect, :power, :pp, :type, :pokemon_with_move, :id
     @@all =[]
@@ -8,7 +8,7 @@ class Move
     @@limit = 746
 
     def initialize(name, url)
-        self.name = name.capitalize.light_red
+        self.name = name
         self.url = url
         self.data = JSON.parse(RestClient.get(url))
         self.set_attributes
@@ -67,7 +67,9 @@ class Move
 
     def print_all
         puts "---------------------------------------------------------"
-        self.print_name
+        puts "                    Dexter++ : Move                   ".light_red
+        puts "---------------------------------------------------------"
+        puts "Name: #{self.print_name}"
         puts ""
         self.print_type
         puts ""
@@ -80,12 +82,16 @@ class Move
     end
 
     def print_name
-        puts "\tName: #{self.name}"
+        self.name.capitalize.light_red
+    end
+
+    def get_colored_name
+        self.name.capitalize.light_red
     end
 
     def print_type
 
-        puts "\tType: #{self.type.name}"
+        puts "\tType: #{self.type.print_name(type.name)}"
     end
     def print_effect
         puts "\tEffect: #{self.effect}"

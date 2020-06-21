@@ -7,5 +7,6 @@ gem 'pry'
 gem 'rest-client'
 gem 'json'
 gem 'colorize'
+gem 'tty-prompt'
 gem "rake", "~> 12.0"
 gem "rspec", "~> 3.0"

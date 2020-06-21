@@ -1,6 +1,5 @@
 class Item
     extend Findable
-    extend Creatable
 
         attr_accessor :name, :url, :effect, :id, :data 
         @@all = []
@@ -8,7 +7,7 @@ class Item
         @@limit = 954
 
         def initialize(name, url)
-            self.name = name.capitalize.light_green
+            self.name = name
             self.url = url
             self.data = JSON.parse(RestClient.get(url))
             self.set_attributes
@@ -45,14 +44,19 @@ class Item
         end
 
         def print_name
-            puts "\tName: #{self.name}"
+            puts "Name: #{self.name.capitalize.light_green}"
+        end
+        def get_colored_name
+            self.name.capitalize.light_green
         end
 
         def print_effect
-            puts "\tEffect: #{self.effect}"
+            puts "Effect: #{self.effect}"
         end
 
         def print_all
+            puts "---------------------------------------------------------"
+            puts "                    Dexter++ : Item                   ".light_green
             puts "---------------------------------------------------------"
             self.print_name
             puts ""
@@ -63,6 +67,8 @@ class Item
         def self.print_all
             self.all.each{|item| item.print_all}
         end
+
+        
 
 
 

@@ -2,5 +2,8 @@
 
 
 require_relative "../lib/environment"
-random = Pokemon.find_with_offset_and_limit(rand(1...Pokemon.limit), 1)[0]
-binding.pry
+
+cli = CLI.new
+cli.run
+
+

@@ -1,6 +1,5 @@
 class Ability
     extend Findable
-    extend Creatable
 
     attr_accessor :name, :id, :effect, :pokemon_with_ability, :url, :data 
     @@all = []
@@ -8,7 +7,7 @@ class Ability
     @@limit = 293
 
     def initialize(name, url)
-        self.name = name.capitalize.light_blue
+        self.name = name
         self.url = url
         self.data = JSON.parse(RestClient.get(url))
         self.pokemon_with_ability = []
@@ -56,6 +55,8 @@ class Ability
 
     def print_all
         puts "---------------------------------------------------------"
+        puts "                    Dexter++ : Ability                   ".light_blue
+        puts "---------------------------------------------------------"
         self.print_name
         puts ""
         self.print_effect 
@@ -67,11 +68,15 @@ class Ability
     end
 
     def print_name
-        puts "\tName: #{self.name}"
+        puts "Name: #{self.name.capitalize.light_blue}"
+    end
+
+    def get_colored_name
+        self.name.capitalize.light_blue
     end
 
     def print_effect
-        puts "\tEffect: #{self.effect}"
+        puts "Effect: #{self.effect}"
     end
 
 end

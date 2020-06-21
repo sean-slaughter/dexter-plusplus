@@ -1,17 +1,99 @@
 
 class API
 
+    #listing helpers
+    
+    def self.get_pokemon_list_by_type(type)
+        output = []
+        begin
+            puts "\n\n"
+            puts "Getting list of #{type.capitalize} Pokemon..."
+            puts "\n\n"
+            data = JSON.parse(RestClient.get("https://pokeapi.co/api/v2/type/#{type}"))
+            index = 0
+            data["pokemon"].each{|pokemon| output << pokemon["pokemon"]["name"].capitalize}
+        rescue => e
+            puts "Error loading list of Pokemon with #{ability}"
+            puts e.message
+        end
+        output
+    end
+
+    def self.get_pokemon_list_by_ability(ability)
+        output = []
+        begin
+            puts "\n\n"
+            puts "Getting list of Pokemon with #{ability}..."
+            puts "\n\n"
+            data = JSON.parse(RestClient.get("https://pokeapi.co/api/v2/ability/#{ability}"))
+            index = 0
+            data["pokemon"].each{|pokemon| output << pokemon["pokemon"]["name"].capitalize}
+        rescue => e
+            puts "Error loading list of Pokemon with #{ability}"
+            puts e.message
+        end
+        output
+    end
+
+    def self.get_pokemon_list_by_generation(gen)
+        begin
+            puts "Getting list of Generation #{gen} Pokemon..."
+            puts "\n\n"
+            case gen
+            when 1
+                Pokemon.find_with_offset_and_limit(0, 151)
+            when 2
+                Pokemon.find_with_offset_and_limit(151, 100)  
+            when 3
+                Pokemon.find_with_offset_and_limit(251, 135)  
+            when 4
+                Pokemon.find_with_offset_and_limit(386, 107)  
+            when 5
+                Pokemon.find_with_offset_and_limit(493, 156) 
+            when 6
+                Pokemon.find_with_offset_and_limit(649, 72)  
+            when 7
+                Pokemon.find_with_offset_and_limit(721, 86)   
+            else
+                nil
+            end
+        rescue => e
+            puts "Error loading generation."
+            puts e.message
+        end
+    end
+
+    #Returning Pokemon objects
     def self.get_pokemon_by_name(pokemon)
-        puts "Searching for #{pokemon}..."
+        puts "\n\n"
+        puts "Searching for #{pokemon.capitalize}..."
+        puts "\n\n"
         begin
             Pokemon.find_or_create_by_name(pokemon)
         rescue => e
             puts "Error loading Pokemon by name."
+            puts e.message
+        end
+    end
+    
+    def self.get_random_pokemon
+        puts "\n\n"
+        puts "Searching for random Pokemon..."
+        puts "\n\n"
+        begin
+            Pokemon.find_random
+        rescue => e
+            puts "Error loading random Pokemon"
+            puts e.message
         end
     end
 
+    #Returning Type objects
+
     def self.get_type_by_name(type)
+        puts "\n\n"
         puts "Searching for #{type}..."
+        puts "\n\n"
         begin
             Type.find_or_create_by_name(type)
         rescue => e
@@ -19,16 +101,45 @@ class API
         end
     end
 
-    def self.get_move_by_name(move)
-        puts "Searching for #{move}..."
+    def self.get_random_type
+        puts "\n\n"
+        puts "Searching for random Type..."
+        puts "\n\n"
         begin
-            Type.find_or_create_by_name(move)
+            Type.find_random
+        rescue => e
+            puts "Error loading random Type"
+            puts e.message
+        end
+    end
+
+    #Returning move objects
+
+    def self.get_move_by_name(move)
+        puts "\n\n"
+        puts "Searching for #{move}..."
+        puts "\n\n"
+        begin
+            Move.find_or_create_by_name(move)
         rescue => e
             puts "Error loading move by name."
         end
     end
-
+    
+    def self.get_random_move
+        puts "\n\n"
+        puts "Searching for random Move..."
+        puts "\n\n"
+        begin
+            Move.find_random
+        rescue => e
+            puts "Error loading random Move"
+            puts e.message
+        end
+    end
+    #Returning Item objects
     def self.get_item_by_name(item)
+        puts "\n\n"
         puts "Searching for #{item}..."
         begin
             Item.find_or_create_by_name(item)
@@ -36,98 +147,40 @@ class API
             puts "Error loading item by name."
         end
     end
-
-    def self.get_items(num)
-        puts "Getting #{num} items..."
+    
+    def self.get_random_item
+        puts "\n\n"
+        puts "Searching for random Item..."
+        puts "\n\n"
         begin
-            Item.find_with_offset_and_limit(rand(1...(Item.limit - num)), num)
+            Item.find_random
         rescue => e
-            puts "Error loading items."
+            puts "Error loading random Item"
+            puts e.message
         end
     end
 
-    def self.get_pokemon(num)
-        puts "Getting Pokemon..."
+    #Returning Ability objects
+    def self.get_ability_by_name(ability)
+        puts "\n\n"
+        puts "Searching for #{ability}..."
         begin
-            Pokemon.find_with_offset_and_limit(rand(1...(Pokemon.limit - num)), num)
+            Ability.find_or_create_by_name(ability)
         rescue => e
-            puts "Error loading Pokemon."
+            puts "Error loading item by name."
         end
     end
-
-    def self.get_moves(num)
-        puts "Getting moves..."
+    
+    def self.get_random_ability
+        puts "\n\n"
+        puts "Searching for random Ability..."
+        puts "\n\n"
         begin
-            Move.find_with_offset_and_limit(rand(1...(Move.limit - num)), num)
+            Ability.find_random
         rescue => e
-            puts "Error loading moves."
+            puts "Error loading random ability"
+            puts e.message
         end
     end
-
-    def self.get_types(num)
-        puts "Getting types..."
-        begin
-            Move.find_with_offset_and_limit(rand(1...(Move.limit - num)), num)
-        rescue => e
-            puts "Error loading types."
-        end
-    end
-
-    def self.get_abilities(num)
-        begin
-            Ability.find_with_offset_and_limit(rand(1...(Ability.limit - num)), num)
-        rescue => e
-            puts "Error loading abilities."
-        end
-    end
-
-    def self.get_pokemon_by_type(type)
-        puts "Getting all #{type} Pokemon..."
-        begin
-            Pokemon.find_by_type(type)
-        rescue => e
-            puts "Error loading Pokemon by Type."
-        end
-    end
-
-    def self.get_moves_by_type(type)
-        puts "Getting all #{type} moves..."
-        begin
-            Move.find_by_type(type)
-        rescue => e
-            puts "Error loading Moves by Type."
-        end
-    end
-
-    def self.get_pokemon_by_generation(generation)
-        
-        case generation
-        when 1
-            puts "Finding Generation: 1"
-            Pokemon.find_with_offset_and_limit(0, 151)
-        when 2
-            puts "Finding Generation: 2"
-            Pokemon.find_with_offset_and_limit(151, 100)
-        when 3
-            puts "Finding Generation: 3"
-            Pokemon.find_with_offset_and_limit(251, 135)
-        when 4
-            puts "Finding Generation: 4"
-            Pokemon.find_with_offset_and_limit(386, 107)
-        when 5
-            puts "Finding Generation: 5"
-            Pokemon.find_with_offset_and_limit(493, 156)
-        when 6
-            puts "Finding Generation: 6"
-            Pokemon.find_with_offset_and_limit(649, 72)
-        when 7
-            puts "Finding Generation: 7"
-            Pokemon.find_with_offset_and_limit(721, 86)
-        else
-            nil
-        end
-    end
-
-
 
 end

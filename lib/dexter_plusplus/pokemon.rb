@@ -1,7 +1,6 @@
 class Pokemon
 
     extend Findable
-    extend Creatable
 
     attr_accessor :name, :moves, :abilities, :base_stats, :height, :weight, :generation, :types, :url, :id, :data
     @@all = []
@@ -12,7 +11,7 @@ class Pokemon
     CONST_GENERATIONS = [151, 251, 386, 493, 649, 721, 807]
 
     def initialize(name, url)
-        self.name = name.capitalize.light_yellow
+        self.name = name
         self.url = url
         self.data = JSON.parse(RestClient.get(url))
         self.moves = []
@@ -51,17 +50,17 @@ class Pokemon
     end
 
     def set_moves
-        move_array = Move.create_from_array(self.data["moves"].first(4))
+        move_array = Move.find_from_array(self.data["moves"].first(4))
         move_array.each{|move| self.add_move(move)}
     end
 
     def set_abilities
-       ability_array = Ability.create_from_array(self.data["abilities"])
+       ability_array = Ability.find_from_array(self.data["abilities"])
        ability_array.each{|ability| self.add_ability(ability)}
     end
 
     def set_types
-        type_array = Type.create_from_array(self.data["types"])  
+        type_array = Type.find_from_array(self.data["types"])  
         type_array.each{|type| self.add_type(type)}
     end
 
@@ -120,7 +119,10 @@ class Pokemon
 
     def print_all
         puts "---------------------------------------------------------"
+        puts "                    Dexter++ : Pokemon                     ".light_yellow
+        puts "---------------------------------------------------------"
         self.print_name
+        puts ""
         self.print_generation
         self.print_weight_and_height
         puts ""
@@ -139,30 +141,34 @@ class Pokemon
     end
 
     def print_name
-        puts "\tName: #{self.name}"
+        puts "Name: #{self.name.capitalize.light_yellow}"
+    end
+
+    def get_colored_name
+        self.name.capitlize.light_yellow
     end
 
     def print_types
         output = "\tTypes:\n"
-        self.types.each_with_index{|type, index| output += "\t#{index + 1}: #{type.name}\n"}
+        self.types.each_with_index{|type, index| output += "\t\t#{index + 1}: #{type.print_name(type.name)}\n"}
         puts output
     end
 
     def print_abilities
         output = "\tAbilities:\n"
-        self.abilities.each_with_index{|ability, index| output += "\t#{index + 1}: #{ability.name}\n"}
+        self.abilities.each_with_index{|ability, index| output += "\t\t#{index + 1}: #{ability.get_colored_name}\n"}
         puts output
     end
 
     def print_moves
         output = "\tMoves:\n"
-        self.moves.each_with_index{|move, index| output += "\t#{index + 1}: #{move.name}\n"}
+        self.moves.each_with_index{|move, index| output += "\t\t#{index + 1}: #{move.get_colored_name}\n"}
         puts output
     end
 
     def print_base_stats
         output =  "\tBase Stats:\n"
-        self.base_stats.each{|stat| output += "\t#{stat}\n"}
+        self.base_stats.each{|stat| output += "\t\t#{stat.capitalize}\n"}
         puts output
     end
 
