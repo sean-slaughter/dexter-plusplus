@@ -1,8 +1,12 @@
 # DexterPlusplus
+ 
+Dexter++ is a Pokedex Ruby Gem that gets information from the Pokemon API (https://pokeapi.co/) and
+displays it as a CLI program.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/dexter_plusplus`. To experiment with that code, run `bin/console` for an interactive prompt.
+Users can get information about different Pokemon and their Abilities, Types, and Moves as well as
+information about various Items that appear in the Pokemon universe.
 
-TODO: Delete this and the text above, and describe your gem
+To get started, follow installation instructions below. Hope you enjoy!
 
 ## Installation
 
@@ -22,7 +26,10 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Once you have the gem installed you can run it in your terminal by executing 'dexter-plusplus'
+This will bring you to a greeting screen and the main CLI menu.
+
+From there you can use arrow keys to make selections for various bits of information.
 
 ## Development
 
